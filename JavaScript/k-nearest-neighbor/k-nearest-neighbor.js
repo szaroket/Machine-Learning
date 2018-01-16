@@ -41,3 +41,33 @@ NodeList.prototype.calculateRanges = function(){
         }
     }
 };
+
+//looking for unknown data
+NodeList.prototype.determineUnknown = function(){
+    this.calculateRanges();
+
+    //loop - looking for unknown types in our dataset
+    for(var i in this.nodes){
+    //if the node have unknown type, clone the nodes list and measure distance
+        if(!this.nodes[i].type){
+
+            this.nodes[i].neighbors = [];
+
+            for(var j in this.nodes){
+                if(!this.nodes[j].type){
+                    continue;
+                }
+                this.nodes[i].neighbors.push(new Node(this.nodes[j]));
+            }
+
+            //Measure distance
+            this.nodes[i].measureDistance(this.area, this.room);
+
+            //Sort by distance
+            this.nodes[i].sortByDistance();
+
+            //Guess type
+            console.log(this.nodes[i].guessType(this.k));
+        }
+    }
+}
