@@ -42,6 +42,24 @@ NodeList.prototype.calculateRanges = function(){
     }
 };
 
+//measure distance between nodes
+Node.prototype.measureDistance = function(area_range_obj, room_range_obj){
+    var room_range = room_range_obj.max - room_range_obj.min;
+    var area_range = area_range_obj.max - area_range_obj.min;
+
+    for(var i in this.neighbors){
+        var neighbors = this.neighbors[i];
+
+        var delta_room = neighbors.room - this.room;
+        delta_room = (delta_room) / room_range;
+
+        var delta_area = neighbors.area - this.area;
+        delta_area = (delta_area) / area_range;
+
+        neighbors.distance = Math.sqrt(delta_room * delta_room + delta_area * delta_area)
+    }
+}
+
 //looking for unknown data
 NodeList.prototype.determineUnknown = function(){
     this.calculateRanges();
